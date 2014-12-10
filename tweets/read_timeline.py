@@ -32,6 +32,8 @@ class StreamListener(tweepy.StreamListener):
         dst = re.sub(r'(?:^|[^ｦ-ﾟー゛゜々ヾヽぁ-ヶ一-龠ａ-ｚＡ-Ｚ０-９a-zA-Z0-9&_\/]+)#([ｦ-ﾟー゛゜々ヾヽぁ-ヶ一-龠ａ-ｚＡ-Ｚ０-９a-zA-Z0-9_]*[ｦ-ﾟー゛゜々ヾヽぁ-ヶ一-龠ａ-ｚＡ-Ｚ０-９a-zA-Z]+[ｦ-ﾟー゛゜々ヾヽぁ-ヶ一-龠ａ-ｚＡ-Ｚ０-９a-zA-Z0-9_]*)', '', dst)
         dst = re.sub(r'@[^\s]+', '', dst)
         print dst
+        mc = MeCab.Tagger("-Ochasen")
+        print mc.parse(dst.encode('utf-8'))
         #print txt["text"]
         return True
     
