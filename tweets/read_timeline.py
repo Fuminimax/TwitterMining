@@ -20,7 +20,7 @@ AS = '4QitfT0CoQVMynWyQdC7UMyYWynMheMxMNF6PPD48'
 #print tweets.status_code
 #timeline = json.loads(tweets.text)
 
-class StreamListener(tweepy.StreamListener):
+class CustomStreamListener(tweepy.StreamListener):
     def on_status(self, status):
         if sys.argv[1].decode('utf-8') in status.text:
             print (status.user.screen_name+' : '+status.text.encode('utf-8'))
@@ -41,7 +41,7 @@ class StreamListener(tweepy.StreamListener):
 auth = tweepy.OAuthHandler(CK, CS)
 auth.set_access_token(AT, AS)
 
-stream_listener= tweepy.Stream(auth, StreamListener())
+stream_listener= tweepy.Stream(auth, CustomStreamListener())
 timelines = stream_listener.sample(languages=['ja'])
 #timelines = stream_listener.filter(languages=['ja'])
 
