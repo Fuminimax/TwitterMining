@@ -5,7 +5,10 @@ import tweepy
 import json
 import sys
 import re
+import csv
+from pprint import pprint
 from requests_oauthlib import OAuth1Session
+from urlparse import ParseResult
 
 CK = 'QFOiO0R9A1oqK94UnjI3Q'
 CS = '9lC3I6cBBNK4TLo6vZFHKpcunJs1FZVGxMAOow8ucs'
@@ -33,11 +36,21 @@ class CustomStreamListener(tweepy.StreamListener):
         dst = re.sub(r'@[^\s]+', '', dst)
         print dst
         mc = MeCab.Tagger("-Ochasen")
-        print mc.parse(dst.encode('utf-8'))
+        en_dst = dst.encode('utf-8')
+        parseResult = mc.parseToNode(en_dst)
+        while parseResult:
+            pos = parseResult.feature.split(',')
+            if pos[0] != 'BOS/EOS' or parseResult.surface != '' or parseResult.surface != 'RT':
+                if pos[0] == '名詞' and len(unicode(parseResult.surface, 'utf-8')) > 1 :
+                    print parseResult.surface + ',' + parseResult.feature
+            parseResult = parseResult.next
+            #words = csv.reader(rows, delimiter='\t')
+            #print words[3]
+        #wordOfPart = words[3]
+        #pprint(parseResult)
         #print txt["text"]
         return True
-    
-
+   
 auth = tweepy.OAuthHandler(CK, CS)
 auth.set_access_token(AT, AS)
 
