@@ -31,6 +31,7 @@ class CustomStreamListener(tweepy.StreamListener):
         mc = MeCab.Tagger("-Ochasen")
         en_dst = dst.encode('utf-8')
         parseResult = mc.parseToNode(en_dst)
+        white_space_delimiter = ''
         while parseResult:
             pos = parseResult.feature.split(',')
             if pos[0] != 'BOS/EOS' or parseResult.surface != '' or parseResult.surface != 'RT':
@@ -59,9 +60,27 @@ class CustomStreamListener(tweepy.StreamListener):
                             print ('Do Not Anything')
                         
                         mysqlcon.commit()
+                        
+                        curs.close()
+                        mysqlcon.close()
+                        white_space_delimiter = white_space_delimiter + word + ' ';
                     except(mysql.connector.errors.ProgrammingError) as e:
                         print(e)
-                parseResult = parseResult.next
+            
+            parseResult = parseResult.next
+        
+        mysqlcon = mysql.connector.connect(host='192.168.120.29',
+                                            port = 3306,
+                                            db = 'TwitterMining',
+                                            user = 'fumio',
+                                            passwd = 'fumio1226',
+                                            charset = 'utf8')
+        curs = mysqlcon.cursor()
+        curs.execute('INSERT INTO lda_document_word(words) VALUES ("' + white_space_delimiter + '");')
+        mysqlcon.commit()
+        curs.close()
+        mysqlcon.close()
+        print white_space_delimiter
         return True
    
 auth = tweepy.OAuthHandler(CK, CS)
