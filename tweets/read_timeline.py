@@ -38,7 +38,7 @@ class CustomStreamListener(tweepy.StreamListener):
                 if (pos[0] == '名詞' or pos[0] == '動詞') and len(unicode(parseResult.surface, 'utf-8')) > 1 :
                     print parseResult.surface + ',' + parseResult.feature
                     try:
-                        mysqlcon = mysql.connector.connect(host='192.168.120.29',
+                        mysqlcon = mysql.connector.connect(host='192.168.120.28',
                                                            port = 3306,
                                                            db = 'TwitterMining',
                                                            user = 'fumio',
@@ -69,18 +69,19 @@ class CustomStreamListener(tweepy.StreamListener):
             
             parseResult = parseResult.next
         
-        mysqlcon = mysql.connector.connect(host='192.168.120.29',
+        mysqlcon = mysql.connector.connect(host='192.168.120.28',
                                             port = 3306,
                                             db = 'TwitterMining',
                                             user = 'fumio',
                                             passwd = 'fumio1226',
                                             charset = 'utf8')
         curs = mysqlcon.cursor()
-        curs.execute('INSERT INTO lda_document_word(words) VALUES ("' + white_space_delimiter + '");')
-        mysqlcon.commit()
-        curs.close()
-        mysqlcon.close()
-        print white_space_delimiter
+        if white_space_delimiter != '':
+            curs.execute('INSERT INTO lda_document_word(words) VALUES ("' + white_space_delimiter + '");')
+            mysqlcon.commit()
+            curs.close()
+            mysqlcon.close()
+            print white_space_delimiter
         return True
    
 auth = tweepy.OAuthHandler(CK, CS)
