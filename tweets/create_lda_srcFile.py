@@ -9,10 +9,10 @@ import mysql.connector
 import sys
 from pprint import pprint
 
-mysqlcon = mysql.connector.connect(host='192.168.120.28',
+mysqlcon = mysql.connector.connect(host='localhost',
                                     port = 3306,
                                     db = 'TwitterMining',
-                                    user = 'fumio',
+                                    user = 'root',
                                     passwd = 'fumio1226',
                                     charset = 'utf8')
 curs = mysqlcon.cursor()

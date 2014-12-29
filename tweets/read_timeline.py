@@ -38,10 +38,10 @@ class CustomStreamListener(tweepy.StreamListener):
                 if (pos[0] == '名詞' or pos[0] == '動詞') and len(unicode(parseResult.surface, 'utf-8')) > 1 :
                     print parseResult.surface + ',' + parseResult.feature
                     try:
-                        mysqlcon = mysql.connector.connect(host='192.168.120.28',
+                        mysqlcon = mysql.connector.connect(host='localhost',
                                                            port = 3306,
                                                            db = 'TwitterMining',
-                                                           user = 'fumio',
+                                                           user = 'root',
                                                            passwd = 'fumio1226',
                                                            charset = 'utf8')
                         curs = mysqlcon.cursor()
@@ -69,10 +69,10 @@ class CustomStreamListener(tweepy.StreamListener):
             
             parseResult = parseResult.next
         
-        mysqlcon = mysql.connector.connect(host='192.168.120.28',
+        mysqlcon = mysql.connector.connect(host='localhost',
                                             port = 3306,
                                             db = 'TwitterMining',
-                                            user = 'fumio',
+                                            user = 'root',
                                             passwd = 'fumio1226',
                                             charset = 'utf8')
         curs = mysqlcon.cursor()
